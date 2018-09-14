@@ -1,5 +1,4 @@
-#Get usage data with cost
-Tool Exports AzureStack usage data with cost to json file
+Tool to export AzureStack usage data with cost to json file
 This tool has been tested on Azure Stack integrated systems connected to Azure
 
 ## Prerequisites
@@ -8,6 +7,7 @@ This tool has been tested on Azure Stack integrated systems connected to Azure
 *AzureStack Operator credentials
 
 ## Procedure
+
 * Install Azure Stack PowerShell modules (if not installed already)
 * Launch Windows PowerShell console
 * Run this tool (refer to parameter examples in the tool)
