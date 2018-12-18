@@ -199,10 +199,27 @@ function Export-AzureStackUsage {
         'EB43DD12-1AA6-4C4B-872C-FAF15A6785EA' = 'QueueTransactions'
         'E518E809-E369-4A45-9274-2017B29FFF25' = 'QueueDataTransIn'
         'DD0A10BA-A5D6-4CB6-88C0-7D585CEF9FC2' = 'QueueDataTransOut'
-        'CBCFEF9A-B91F-4597-A4D3-01FE334BED82' = 'DatabaseSizeHourSqlMeter'
+		'FAB6EB84-500B-4A09-A8CA-7358F8BBAEA5' = 'Base VM Size Hours'
+		'9cd92d4c-bafd-4492-b278-bedc2de8232a' = 'Windows VM Size Hours'
+		'6DAB500F-A4FD-49C4-956D-229BB9C8C793' = 'VM size hours'
+		'380874f9-300c-48e0-95a0-d2d9a21ade8f' = "S4"
+		'1b77d90f-427b-4435-b4f1-d78adec53222' = "S4"
+		'd5f7731b-f639-404a-89d0-e46186e22c8d' = "S10"
+		'ff85ef31-da5b-4eac-95dd-a69d6f97b18a' = "S15"
+		'88ea9228-457a-4091-adc9-ad5194f30b6e' = "S20"
+		'5b1db88a-8596-4002-8052-347947c26940' = "S30"
+		'7660b45b-b29d-49cb-b816-59f30fbab011' = "P4"
+		'817007fd-a077-477f-bc01-b876f27205fd' = "P6"
+		'e554b6bc-96cd-4938-a5b5-0da990278519' = "P10"
+		'cdc0f53a-62a9-4472-a06c-e99a23b02907' = "P15"
+		'b9cb2d1a-84c2-4275-aa8b-70d2145d59aa' = "P20"
+		'06bde724-9f94-43c0-84c3-d0fc54538369' = "P30"
+		'7ba084ec-ef9c-4d64-a179-7732c6cb5e28' = "ActualStandardDiskSize"
+		'daef389a-06e5-4684-a7f7-8813d9f792d5' = "ActualPremiumDiskSize"
+		'75d4b707-1027-4403-9986-6ec7c05579c8' = "ActualStandardSnapshotSize"
+		'5ca1cbb9-6f14-4e76-8be8-1ca91547965e' = "ActualPremiumSnapshotSize"
+	    'CBCFEF9A-B91F-4597-A4D3-01FE334BED82' = 'DatabaseSizeHourSqlMeter'
 		'E6D8CFCD-7734-495E-B1CC-5AB0B9C24BD3' = 'DatabaseSizeHourMySqlMeter'
-        'FAB6EB84-500B-4A09-A8CA-7358F8BBAEA5' = 'Base VM Size Hours'
-        '6DAB500F-A4FD-49C4-956D-229BB9C8C793' = 'VM size hours'
 		'EBF13B9F-B3EA-46FE-BF54-396E93D48AB4' = 'Key Vault transactions'
 		'2C354225-B2FE-42E5-AD89-14F0EA302C87' = 'Advanced keys transactions'
 		'190C935E-9ADA-48FF-9AB8-56EA1CF9ADAA' = 'App Service'
@@ -218,7 +235,7 @@ function Export-AzureStackUsage {
 		'60B42D72-DC1C-472C-9895-6C516277EDB4' = 'IP SSL'
 		'73215A6C-FA54-4284-B9C1-7E8EC871CC5B' = 'Web Process'
 		'5887D39B-0253-4E12-83C7-03E1A93DFFD9' = 'External Egress Bandwidth'
-        '9cd92d4c-bafd-4492-b278-bedc2de8232a' = 'Windows VM Size Hours'
+
     }
 	$ratecardmapping = @{}
 	$rateCardObj = New-Object -TypeName System.Object
