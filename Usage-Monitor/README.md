@@ -12,8 +12,10 @@ This tool has been tested on Azure Stack integrated systems connected to Azure
 * Launch Windows PowerShell console
 * Run this tool (refer to parameter examples in the tool)
 
-##IMPORTANT
+## IMPORTANT
 The AzureStack resource meter rates used in this tool are generic as published by [Microsoft Azure Stack packaging and pricing](https://azure.microsoft.com/mediahandler/files/resourcefiles/5bc3f30c-cd57-4513-989e-056325eb95e1/Azure-Stack-packaging-and-pricing-datasheet.pdf)
 Refer to ratecard specific to your AzureStack deployment.
 
+## References
 
+[Azure Stack Resource Meters](https://docs.microsoft.com/en-us/azure/azure-stack/azure-stack-usage-related-faq)
