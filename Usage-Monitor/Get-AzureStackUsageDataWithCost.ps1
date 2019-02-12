@@ -282,9 +282,21 @@ function Export-AzureStackUsage {
 			}
 
 			#Populate all required tenant details
-			$record | Add-Member -Name Tenant -MemberType NoteProperty -Value $tenant.Owner
-			$record | Add-Member -Name TenantSubscriptionName -MemberType NoteProperty -Value $tenant.DisplayName
-			$record | Add-Member -Name TenantSubscriptionState -MemberType NoteProperty -Value $tenant.State
+			if([string]::IsNullOrEmpty($tenant.Owner)) {
+				$record | Add-Member -Name Tenant -MemberType NoteProperty -Value "mystery-user"
+			} else {
+				$record | Add-Member -Name Tenant -MemberType NoteProperty -Value $tenant.Owner
+			}
+			if([string]::IsNullOrEmpty($tenant.DisplayName)) {
+				$record | Add-Member -Name TenantSubscriptionName -MemberType NoteProperty -Value "Mystery Subscription"
+			} else {
+				$record | Add-Member -Name TenantSubscriptionName -MemberType NoteProperty -Value $tenant.DisplayName
+			}
+			if([string]::IsNullOrEmpty($tenant.State)) {
+				$record | Add-Member -Name TenantSubscriptionState -MemberType NoteProperty -Value "Unknown"
+			} else {
+				$record | Add-Member -Name TenantSubscriptionState -MemberType NoteProperty -Value $tenant.State
+			}
 
 			$record | Add-Member -Name subscription -MemberType NoteProperty -Value $metersubscription
 			$record | Add-Member -Name location -MemberType NoteProperty -Value ([string]::Format("{0}.{1}",$resourceInfo.location,$AzureStackDomain1))
@@ -297,25 +309,31 @@ function Export-AzureStackUsage {
 			$record | Add-Member -Name Name -MemberType NoteProperty -Value $_.Name
 			$record | Add-Member -Name Type -MemberType NoteProperty -Value $_.Type
 			$record | Add-Member -Name MeterId -MemberType NoteProperty -Value $_.Properties.MeterId
-			if ($azsmeters.ContainsKey($_.Properties.MeterId)) {
-				$record | Add-Member -Name MeterName -MemberType NoteProperty -Value $azsmeters[$_.Properties.MeterId]
-			} else {
-				$record | Add-Member -Name MeterName -MemberType NoteProperty -Value "Unknown"
-			}
-			if($ratecardmapping.ContainsKey($azsmeters[$_.Properties.MeterId])) {
-				$rateCardObj = $ratecardmapping[$azsmeters[$_.Properties.MeterId]]
-				$record | Add-Member -Name RateCardMeterId -MemberType NoteProperty -Value $rateCardObj.MeterId
-				$record | Add-Member -Name MeterUnit -MemberType NoteProperty -Value $rateCardObj.Units
-				$record | Add-Member -Name OpenRate -MemberType NoteProperty -Value $rateCardObj.OpenRate
-			} else {
-				$record | Add-Member -Name RateCardMeterId -MemberType NoteProperty -Value "Unknown"
-				$record | Add-Member -Name MeterUnit -MemberType NoteProperty -Value "Unknown"
-				$record | Add-Member -Name OpenRate -MemberType NoteProperty -Value "0"
-			}
 			$record | Add-Member -Name Quantity -MemberType NoteProperty -Value $_.Properties.Quantity
 			$record | Add-Member -Name additionalInfo -MemberType NoteProperty -Value $resourceInfo.additionalInfo
 			$record | Add-Member -Name tags -MemberType NoteProperty -Value $resourceInfo.tags
 			$record | Add-Member -Name resourceUri -MemberType NoteProperty -Value $resourceText
+
+			#Check to see whether this resource's meterId is known
+			if ($azsmeters.ContainsKey($_.Properties.MeterId)) {
+				$record | Add-Member -Name MeterName -MemberType NoteProperty -Value $azsmeters[$_.Properties.MeterId]
+				#Check to see whether ratecard info for this meter exist
+				if($ratecardmapping.ContainsKey($azsmeters[$_.Properties.MeterId])) {
+					$rateCardObj = $ratecardmapping[$azsmeters[$_.Properties.MeterId]]
+					$record | Add-Member -Name RateCardMeterId -MemberType NoteProperty -Value $rateCardObj.MeterId
+					$record | Add-Member -Name MeterUnit -MemberType NoteProperty -Value $rateCardObj.Units
+					$record | Add-Member -Name OpenRate -MemberType NoteProperty -Value $rateCardObj.OpenRate
+				} else {
+					$record | Add-Member -Name RateCardMeterId -MemberType NoteProperty -Value "Unknown"
+					$record | Add-Member -Name MeterUnit -MemberType NoteProperty -Value "Unknown"
+					$record | Add-Member -Name OpenRate -MemberType NoteProperty -Value "0"
+				}
+			} else {
+				$record | Add-Member -Name MeterName -MemberType NoteProperty -Value "Unknown"
+				$record | Add-Member -Name RateCardMeterId -MemberType NoteProperty -Value "Unknown"
+				$record | Add-Member -Name MeterUnit -MemberType NoteProperty -Value "Unknown"
+				$record | Add-Member -Name OpenRate -MemberType NoteProperty -Value "0"
+			}
             
 			$usageSummary += $record
 		}
