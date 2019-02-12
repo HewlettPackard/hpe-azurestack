@@ -218,7 +218,8 @@ function Export-AzureStackUsage {
 		'60B42D72-DC1C-472C-9895-6C516277EDB4' = 'IP SSL'
 		'73215A6C-FA54-4284-B9C1-7E8EC871CC5B' = 'Web Process'
 		'5887D39B-0253-4E12-83C7-03E1A93DFFD9' = 'External Egress Bandwidth'
-        '9cd92d4c-bafd-4492-b278-bedc2de8232a' = 'Windows VM Size Hours'
+		'9cd92d4c-bafd-4492-b278-bedc2de8232a' = 'Windows VM Size Hours'
+		'7ba084ec-ef9c-4d64-a179-7732c6cb5e28' = 'Disks'
     }
 	$ratecardmapping = @{}
 	$rateCardObj = New-Object -TypeName System.Object
@@ -299,18 +300,17 @@ function Export-AzureStackUsage {
 			$record | Add-Member -Name MeterId -MemberType NoteProperty -Value $_.Properties.MeterId
 			if ($azsmeters.ContainsKey($_.Properties.MeterId)) {
 				$record | Add-Member -Name MeterName -MemberType NoteProperty -Value $azsmeters[$_.Properties.MeterId]
-			} else {
+				if($ratecardmapping.ContainsKey($azsmeters[$_.Properties.MeterId])) {
+					  $rateCardObj = $ratecardmapping[$azsmeters[$_.Properties.MeterId]]
+					  $record | Add-Member -Name RateCardMeterId -MemberType NoteProperty -Value $rateCardObj.MeterId
+					  $record | Add-Member -Name MeterUnit -MemberType NoteProperty -Value $rateCardObj.Units
+					  $record | Add-Member -Name OpenRate -MemberType NoteProperty -Value $rateCardObj.OpenRate
+				} 
+		 	} else {
 				$record | Add-Member -Name MeterName -MemberType NoteProperty -Value "Unknown"
-			}
-			if($ratecardmapping.ContainsKey($azsmeters[$_.Properties.MeterId])) {
-				$rateCardObj = $ratecardmapping[$azsmeters[$_.Properties.MeterId]]
-				$record | Add-Member -Name RateCardMeterId -MemberType NoteProperty -Value $rateCardObj.MeterId
-				$record | Add-Member -Name MeterUnit -MemberType NoteProperty -Value $rateCardObj.Units
-				$record | Add-Member -Name OpenRate -MemberType NoteProperty -Value $rateCardObj.OpenRate
-			} else {
 				$record | Add-Member -Name RateCardMeterId -MemberType NoteProperty -Value "Unknown"
 				$record | Add-Member -Name MeterUnit -MemberType NoteProperty -Value "Unknown"
-				$record | Add-Member -Name OpenRate -MemberType NoteProperty -Value "0"
+				$record | Add-Member -Name OpenRate -MemberType NoteProperty -Value "0" 
 			}
 			$record | Add-Member -Name Quantity -MemberType NoteProperty -Value $_.Properties.Quantity
 			$record | Add-Member -Name additionalInfo -MemberType NoteProperty -Value $resourceInfo.additionalInfo
